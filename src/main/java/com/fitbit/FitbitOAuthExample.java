@@ -17,6 +17,8 @@ package com.fitbit;
 
 import com.fitbit.model.Activity;
 import com.fitbit.model.LifetimeActivity;
+import com.fitbit.model.goals.Goal;
+import com.fitbit.model.goals.Goals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,7 +60,30 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
 
 		return lifetimeActivity;
 	}
-	
+
+	@RequestMapping("/lifetime-activity1")
+	public Goal lifetimeActivity1() {
+
+		System.out.println("In here: " + fitbitOAuthRestTemplate.getAccessToken());
+
+//		fitbitOAuthRestTemplate.
+
+	return  fitbitOAuthRestTemplate.getForObject(fitbitActivitiesUri, Goals.class).getGoal();
+
+	}
+
+	@RequestMapping("/lifetime-activity2")
+	public Object lifetimeActivity2() {
+
+		System.out.println("In here: " + fitbitOAuthRestTemplate.getAccessToken());
+
+//		fitbitOAuthRestTemplate.
+
+		return  fitbitOAuthRestTemplate.getForObject(fitbitActivitiesUri, Object.class);
+
+	}
+
+
 	@RequestMapping("/user")
 	public Principal user(Principal principal) {
 		return principal;
@@ -65,8 +91,9 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest()
-				.authenticated();
+		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest().authenticated()
+				.and().logout().logoutSuccessUrl("/").permitAll()
+				.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	}
 
 	public static void main(String[] args) {
