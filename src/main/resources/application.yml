@@ -14,7 +14,16 @@ security:
 fitbit:
   api:
     resource:
-      activitiesUri: https://api.fitbit.com//1/user/-/activities/date/2018-02-18.json
+      activitiesUri: https://api.fitbit.com//1/user/-/activities/date/
+      goalsUri: https://api.fitbit.com//1/user/-/activities/goals/
+      lifetimeStatsUri: https://api.fitbit.com//1/user/-/activities.json
+      sleepDateRangeUri: https://api.fitbit.com/1.2/user/-/sleep/date/
+      heartRateDateRangeUri: https://api.fitbit.com/1/user/-/activities/heart/date/
+      stepsDateRangeUri: https://api.fitbit.com/1/user/-/activities/steps/date/
+      caloriesDateRangeUri: https://api.fitbit.com/1/user/-/activities/calories/date/
+      distanceDateRangeUri: https://api.fitbit.com/1/user/-/activities/distance/date/
+      floorsDateRangeUri: https://api.fitbit.com/1/user/-/activities/floors/date/
+
 
 logging:
   level:

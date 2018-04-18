@@ -1,137 +1,175 @@
-<!--<!doctype html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--<meta charset="utf-8" />-->
-<!--<meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
-<!--<title>Demo</title>-->
-<!--<meta name="description" content="" />-->
-<!--<meta name="viewport" content="width=device-width" />-->
-<!--<base href="/" />-->
-<!--<link rel="stylesheet" type="text/css"-->
-	<!--href="/webjars/bootstrap/css/bootstrap.min.css" />-->
-<!--<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>-->
-<!--<script type="text/javascript"-->
-	<!--src="/webjars/bootstrap/js/bootstrap.min.js"></script>-->
-<!--</head>-->
-<!--<body ng-app="app" ng-controller="home as home">-->
-	<!--<h1>Login</h1>-->
-	<!--<div class="container" ng-show="!home.authenticated">-->
-		<!--With Fitbit: <a href="/login">click here</a>-->
-	<!--</div>-->
-	<!--<div class="container" ng-show="home.authenticated">-->
-		<!--<div class="container authenticated">-->
-			<!--Logged in as: <span id="user"></span>-->
-			<!--<div>-->
-				<!--<button onClick="logout()" class="btn btn-primary">Logout</button>-->
-			<!--</div>-->
-		<!--</div>-->
-		<!--Logged in as: <span ng-bind="home.user"></span><br />-->
-		<!--Lifetime Steps: <span ng-bind="home.lifetimeSteps"></span><br />-->
-		<!--Lifetime Distance: <span ng-bind="home.lifetimeDistance"></span><br />-->
-		<!--Lifetime Floors: <span ng-bind="home.lifetimeFloors"></span><br />-->
-	<!--</div>-->
-	<!--<script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>-->
-	<!--<script type="text/javascript">-->
-		<!--angular.module("app", []).controller("home", function($http) {-->
-			<!--var self = this;-->
-
-			<!--$http.get("/user").success(function(data) {-->
-				<!--self.user = data.userAuthentication.details.user.fullName;-->
-				<!--self.authenticated = true;-->
-			<!--}).error(function() {-->
-				<!--self.user = "N/A";-->
-				<!--self.authenticated = false;-->
-			<!--});-->
-
-			<!--$http.get("/lifetime-activity").success(function(data) {-->
-				<!--self.lifetimeSteps = data.steps.toLocaleString();-->
-				<!--self.lifetimeFloors = data.floors.toLocaleString();-->
-				<!--self.lifetimeDistance = data.distance.toLocaleString();-->
-			<!--}).error(function() {-->
-				<!--self.lifetimeSteps = "N/A";-->
-			<!--});-->
-
-
-            <!--$http.get("/lifetime-activity1").success(function(data) {-->
-                <!--self.lifetimeSteps = data.steps.toLocaleString();-->
-                <!--self.lifetimeFloors = data.floors.toLocaleString();-->
-                <!--self.lifetimeDistance = data.distance.toLocaleString();-->
-            <!--}).error(function() {-->
-                <!--self.lifetimeSteps = "N/A";-->
-            <!--});-->
-
-            <!--var logout = function() {-->
-                <!--$http.post("/logout", function () {-->
-                    <!--$("#user").html('');-->
-                    <!--$(".unauthenticated").show();-->
-                    <!--$(".authenticated").hide();-->
-                    <!--echo("hi guys");-->
-                <!--})-->
-                <!--return true;-->
-            <!--}-->
-		<!--});-->
-	<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>Demo</title>
-	<meta name="description" content=""/>
-	<meta name="viewport" content="width=device-width"/>
-	<base href="/"/>
-	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width" />
+	<base href="/" />
+	<link rel="stylesheet" type="text/css"
+		  href="/webjars/bootstrap/css/bootstrap.min.css" />
 	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+	<script type="text/javascript"
+			src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
-<body ng-app="app" ng-controller="home as home">
-<h1>Demo</h1>
-<div class="container"></div>
+<body>
+<h1>Login</h1>
 <div class="container unauthenticated">
-	With Facebook: <a href="/login">click here</a>
+	With Fitbit: <a href="/login">click here</a>
 </div>
-<div class="container authenticated">
-	Logged in as: <span id="user"></span>
+<div class="container authenticated" style="display: none">
+	Logged in as: <span id="user"></span><br />
+	Lifetime Steps: <span id="lifetimeSteps"></span><br />
+	Lifetime Distance: <span id="lifetimeDistance"></span><br />
+	Lifetime Floors: <span id="lifetimeFloors"></span><br /><br />
+
+	<input checked="checked" name="goals" type="radio" value="daily" />Daily
+	<input name="goals" type="radio" value="weekly" />Weekly <br />
+	<button onClick="goals()" class="btn btn-primary">Goals</button><br /><br />
+
+	<a href="/lifetime-activity">Lifetime Activity</a><br /><br />
+
+	<input id="date" name="name" type="date" value="Frank" />
+	<button onClick="daily_activities()" class="btn btn-primary">Daily Activity</button><br /><br />
+
+	<button onClick="sleep_data()" class="btn btn-primary">Sleep Data</button>
+	Start Date:<input id="start_date" name="name" type="date" value="sleep_date" />
+	End Date:<input id="end_date" name="name" type="date" value="sleep_date" /><br /><br />
+
+	<button onClick="heart_rate_data()" class="btn btn-primary">Heart-Rate Data</button>
+	Start Date:<input id="heart_start_date" name="name" type="date" value="heart_rate_date" />
+	End Date:<input id="heart_end_date" name="name" type="date" value="heart_rate_date" /><br /><br />
+
+	<button onClick="steps_data()" class="btn btn-primary">Steps Data</button>
+	Start Date:<input id="steps_start_date" name="name" type="date" value="steps_date" />
+	End Date:<input id="steps_end_date" name="name" type="date" value="steps_date" /><br /><br />
+
+	<button onClick="calories_data()" class="btn btn-primary">Calories Data</button>
+	Start Date:<input id="calories_start_date" name="name" type="date" value="calories_date" />
+	End Date:<input id="calories_end_date" name="name" type="date" value="calories_date" /><br /><br />
+
+	<button onClick="distance_data()" class="btn btn-primary">Distance Data</button>
+	Start Date:<input id="distance_start_date" name="name" type="date" value="distance_date" />
+	End Date:<input id="distance_end_date" name="name" type="date" value="distance_date" /><br /><br />
+
+	<button onClick="floors_data()" class="btn btn-primary">Floors Data</button>
+	Start Date:<input id="floors_start_date" name="name" type="date" value="floors_date" />
+	End Date:<input id="floors_end_date" name="name" type="date" value="floors_date" /><br /><br />
+
+
 	<div>
 		<button onClick="logout()" class="btn btn-primary">Logout</button>
 	</div>
 </div>
+<script type="text/javascript"
+		src="/webjars/js-cookie/js.cookie.js"></script>
 <script type="text/javascript">
-    angular.module("app", []).controller("home", function($http) {
-        $http.get("/user", function(data) {
-        $("#user").html(data.userAuthentication.details.name);
-        $(".unauthenticated").hide()
-        $(".authenticated").show()
+    $.ajaxSetup({
+            beforeSend : function(xhr, settings) {
+                if (settings.type == 'POST' || settings.type == 'PUT'
+                    || settings.type == 'DELETE') {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/
+                            .test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-XSRF-TOKEN",
+                            Cookies.get('XSRF-TOKEN'));
+                    }
+                }
+            }
+        });
+
+    $.get("/lifetime-activity", function(data) {
+        $("#lifetimeSteps").html(data.steps);
+        $("#lifetimeFloors").html(data.floors);
+        $("#lifetimeDistance").html(data.distance);
     });
 
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.user.fullName);
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+    });
 
-    // var logout = function() {
-        $http.post("/logout", function() {
+    var daily_activities = function () {
+        var date = document.getElementById("date").value;
+        $.get("/daily-activity", { date: date + ".json" }, function(data) {
+            console.log(data);
+        });
+    };
+
+    var goals = function () {
+        var goal_type = $('input[name=goals]:checked').val()
+        $.get("/goals", { goal_type: goal_type + ".json" }, function(data) {
+            console.log(data);
+        });
+    };
+
+    var sleep_data = function () {
+        var start_date = document.getElementById("start_date").value;
+        var end_date = document.getElementById("end_date").value;
+        $.get("/sleep-data", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 1");
+            console.log(data);
+        });
+    };
+
+    var heart_rate_data = function () {
+        var start_date = document.getElementById("heart_start_date").value;
+        var end_date = document.getElementById("heart_end_date").value;
+        $.get("/heart-rate", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 2");
+            console.log(data);
+        });
+    };
+
+    var steps_data = function () {
+        var start_date = document.getElementById("steps_start_date").value;
+        var end_date = document.getElementById("steps_end_date").value;
+        $.get("/steps-data", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 3");
+            console.log(data);
+        });
+    };
+
+
+    var calories_data = function () {
+        var start_date = document.getElementById("calories_start_date").value;
+        var end_date = document.getElementById("calories_end_date").value;
+        $.get("/calories-data", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 4");
+            console.log(data);
+        });
+    };
+
+
+    var distance_data = function () {
+        var start_date = document.getElementById("distance_start_date").value;
+        var end_date = document.getElementById("distance_end_date").value;
+        $.get("/distance-data", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 5");
+            console.log(data);
+        });
+    };
+
+
+    var floors_data = function () {
+        var start_date = document.getElementById("floors_start_date").value;
+        var end_date = document.getElementById("floors_end_date").value;
+        $.get("/floors-data", { date_range: start_date + "/" + end_date + ".json" }, function(data) {
+            console.log("hii man 6");
+            console.log(data);
+        });
+    };
+
+    var logout = function() {
+        $.post("/logout", function() {
             $("#user").html('');
             $(".unauthenticated").show();
             $(".authenticated").hide();
-        })
-        // return true;
-    // }
-
-    $.ajaxSetup({
-        beforeSend : function(xhr, settings) {
-            if (settings.type == 'POST' || settings.type == 'PUT'
-                || settings.type == 'DELETE') {
-                if (!(/^http:.*/.test(settings.url) || /^https:.*/
-                        .test(settings.url))) {
-                    // Only send the token to relative URLs i.e. locally.
-                    xhr.setRequestHeader("X-XSRF-TOKEN",
-                        Cookies.get('XSRF-TOKEN'));
-                }
-            }
-        }
-    });
-    })
+        });
+        return true;
+    }
 </script>
 </body>
 </html>
