@@ -1,25 +1,40 @@
 
-package com.fitbit.model.SleepData;
+package com.fitbit.model.sleep;
 
 import javax.annotation.Generated;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
 public class Sleep {
 
+    @SerializedName("dateOfSleep")
     private String mDateOfSleep;
+    @SerializedName("duration")
     private Long mDuration;
+    @SerializedName("efficiency")
     private Long mEfficiency;
+    @SerializedName("endTime")
     private String mEndTime;
+    @SerializedName("infoCode")
     private Long mInfoCode;
+    @SerializedName("levels")
     private Levels mLevels;
+    @SerializedName("logId")
     private Long mLogId;
+    @SerializedName("minutesAfterWakeup")
     private Long mMinutesAfterWakeup;
+    @SerializedName("minutesAsleep")
     private Long mMinutesAsleep;
+    @SerializedName("minutesAwake")
     private Long mMinutesAwake;
+    @SerializedName("minutesToFallAsleep")
     private Long mMinutesToFallAsleep;
+    @SerializedName("startTime")
     private String mStartTime;
+    @SerializedName("timeInBed")
     private Long mTimeInBed;
+    @SerializedName("type")
     private String mType;
 
     public String getDateOfSleep() {

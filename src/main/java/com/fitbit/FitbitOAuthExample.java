@@ -17,9 +17,17 @@ package com.fitbit;
 
 import com.fitbit.model.Activity;
 import com.fitbit.model.LifetimeActivity;
-import com.fitbit.model.SleepData.SleepData;
-import com.fitbit.model.goals.Goals;
-import com.fitbit.model.goals.MyGoals;
+import com.fitbit.model.activities.DailyActivity;
+import com.fitbit.model.calories.CaloriesData;
+import com.fitbit.model.distance.DistanceData;
+import com.fitbit.model.floors.FloorsData;
+import com.fitbit.model.goals.MyGoal;
+import com.fitbit.model.heart.HeartData;
+import com.fitbit.model.sleep.SleepData;
+import com.fitbit.model.steps.ActivitiesStep;
+import com.fitbit.model.steps.StepsData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -35,7 +43,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Type;
 import java.security.Principal;
+import java.util.List;
 
 @SpringBootApplication
 @EnableOAuth2Sso
@@ -76,63 +86,148 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
     @RequestMapping("/lifetime-activity")
     public LifetimeActivity lifetimeActivity() {
         LifetimeActivity lifetimeActivity;
+//        Gson gson = new Gson();
+//        Total total;
+
         try {
             Activity a = fitbitOAuthRestTemplate.getForObject(fitbitLifetimeStatsUri, Activity.class);
             lifetimeActivity = a.getLifetime().getTotal();
+
+//            String jsonString = fitbitOAuthRestTemplate.getForObject(fitbitLifetimeStatsUri, String.class);
+//            System.out.println(jsonString);
+//
+//            LifetimeActivities lifetimeActivities = gson.fromJson(jsonString, LifetimeActivities.class);
+//            total = lifetimeActivities.getLifetime().getTotal();
+
         } catch (Exception e) {
             lifetimeActivity = new LifetimeActivity();
+//            total = new Total();
         }
         return lifetimeActivity;
     }
 
     @RequestMapping("/goals")
-    public @ResponseBody Goals goalsActivity(@RequestParam(value = "goal_type") String goalType) {
+    public @ResponseBody
+    Object goalsActivity(@RequestParam(value = "goal_type") String goalType) {
         System.out.println("In here goals: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(fitbitGoalsUri + goalType, MyGoals.class).getGoals();
+        Gson gson = new Gson();
 
+        String jsonString = fitbitOAuthRestTemplate.getForObject(fitbitGoalsUri + goalType, String.class);
+        System.out.println(jsonString);
+
+        MyGoal myGoal = gson.fromJson(jsonString, MyGoal.class);
+        return myGoal;
     }
 
     @RequestMapping("/daily-activity")
-    public @ResponseBody Object dailyActivity(@RequestParam(value = "date") String date) {
-        System.out.println("In here object: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(fitbitActivitiesUri + date, Object.class);
+    public @ResponseBody
+    Object dailyActivity(@RequestParam(value = "date") String date) {
+        System.out.println("In here Activity object: " + fitbitOAuthRestTemplate.getAccessToken());
+        Gson gson = new Gson();
+
+        String jsonString = fitbitOAuthRestTemplate.getForObject(fitbitActivitiesUri + date, String.class);
+        System.out.println(jsonString);
+
+        DailyActivity dailyActivity = gson.fromJson(jsonString, DailyActivity.class);
+        return dailyActivity;
     }
 
+
     @RequestMapping("/sleep-data")
-    public @ResponseBody Object sleepDateRange(@RequestParam(value = "date_range") String dateRange) {
+    public @ResponseBody
+    Object sleepDateRange(@RequestParam(value = "date_range") String dateRange) {
         System.out.println("In here sleep data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(sleepDateRangeUri + dateRange, SleepData.class).getSleep().get(1).getLevels().getSummary();
+        Gson gson = new Gson();
+
+        String jsonString = fitbitOAuthRestTemplate.getForObject(sleepDateRangeUri + dateRange, String.class);
+        System.out.println(jsonString);
+
+        SleepData sleepData = gson.fromJson(jsonString, SleepData.class);
+        return sleepData;
     }
 
     @RequestMapping("/heart-rate")
-    public @ResponseBody Object heartRateDateRange(@RequestParam(value = "date_range") String dateRange) {
+    public @ResponseBody
+    Object heartRateDateRange(@RequestParam(value = "date_range") String dateRange) {
         System.out.println("In here Heart Rate data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(heartRateDateRangeUri + dateRange, Object.class);
+
+        Gson gson = new Gson();
+        String jsonString = fitbitOAuthRestTemplate.getForObject(heartRateDateRangeUri + dateRange, String.class);
+        System.out.println(jsonString);
+
+        // Deserialization
+        Type collectionType = new TypeToken<HeartData>() {
+        }.getType();
+        HeartData heartData = gson.fromJson(jsonString, collectionType);
+
+        return heartData;
     }
 
     @RequestMapping("/steps-data")
-    public @ResponseBody Object stepsDateRange(@RequestParam(value = "date_range") String dateRange) {
-        System.out.println("In here Heart Rate data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(stepsDateRangeUri + dateRange, Object.class);
+    public @ResponseBody
+    Object stepsDateRange(@RequestParam(value = "date_range") String dateRange) {
+        System.out.println("In here Steps data: " + fitbitOAuthRestTemplate.getAccessToken());
+
+        Gson gson = new Gson();
+        String jsonString = fitbitOAuthRestTemplate.getForObject(stepsDateRangeUri + dateRange, String.class);
+
+        // Deserialization
+//        System.out.println(jsonString);
+//        Type collectionType = new TypeToken<StepsData>() {
+//        }.getType();
+        StepsData stepsData = gson.fromJson(jsonString, StepsData.class);
+        List<ActivitiesStep> steps = stepsData.getActivitiesSteps();
+        for (ActivitiesStep step : steps) {
+            System.out.println(step.getDateTime() + " : " + step.getValue());
+        }
+        return stepsData;
     }
 
     @RequestMapping("/calories-data")
-    public @ResponseBody Object caloriesDateRange(@RequestParam(value = "date_range") String dateRange) {
-        System.out.println("In here Heart Rate data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(caloriesDateRangeUri + dateRange, Object.class);
+    public @ResponseBody
+    Object caloriesDateRange(@RequestParam(value = "date_range") String dateRange) {
+        System.out.println("In here Calories data: " + fitbitOAuthRestTemplate.getAccessToken());
+
+        Gson gson = new Gson();
+        String jsonString = fitbitOAuthRestTemplate.getForObject(caloriesDateRangeUri + dateRange, String.class);
+
+        // Deserialization
+        System.out.println(jsonString);
+
+//        Type collectionType = new TypeToken<CaloriesData>() {
+//        }.getType();
+        CaloriesData caloriesData = gson.fromJson(jsonString, CaloriesData.class);
+
+        return caloriesData;
     }
 
     @RequestMapping("/distance-data")
-    public @ResponseBody Object distanceDateRange(@RequestParam(value = "date_range") String dateRange) {
-        System.out.println("In here Heart Rate data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(distanceDateRangeUri + dateRange, Object.class);
+
+    public @ResponseBody
+    Object distanceDateRange(@RequestParam(value = "date_range") String dateRange) {
+        System.out.println("In here Distance data: " + fitbitOAuthRestTemplate.getAccessToken());
+        Gson gson = new Gson();
+
+        String jsonString = fitbitOAuthRestTemplate.getForObject(distanceDateRangeUri + dateRange, String.class);
+        System.out.println(jsonString);
+
+        DistanceData distanceData = gson.fromJson(jsonString, DistanceData.class);
+        return distanceData;
     }
 
     @RequestMapping("/floors-data")
-    public @ResponseBody Object floorsDateRange(@RequestParam(value = "date_range") String dateRange) {
-        System.out.println("In here Heart Rate data: " + fitbitOAuthRestTemplate.getAccessToken());
-        return fitbitOAuthRestTemplate.getForObject(floorsDateRangeUri + dateRange, Object.class);
+    public @ResponseBody
+    Object floorsDateRange(@RequestParam(value = "date_range") String dateRange) {
+        System.out.println("In here Floors data: " + fitbitOAuthRestTemplate.getAccessToken());
+        Gson gson = new Gson();
+
+        String jsonString = fitbitOAuthRestTemplate.getForObject(floorsDateRangeUri + dateRange, String.class);
+        System.out.println(jsonString);
+
+        FloorsData floorsData = gson.fromJson(jsonString, FloorsData.class);
+        return floorsData;
     }
+
 
     @RequestMapping("/user")
     public Principal user(Principal principal) {

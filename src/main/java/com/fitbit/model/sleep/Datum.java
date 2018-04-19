@@ -1,14 +1,18 @@
 
-package com.fitbit.model.SleepData;
+package com.fitbit.model.sleep;
 
 import javax.annotation.Generated;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class ShortDatum {
+public class Datum {
 
+    @SerializedName("dateTime")
     private String mDateTime;
+    @SerializedName("level")
     private String mLevel;
+    @SerializedName("seconds")
     private Long mSeconds;
 
     public String getDateTime() {

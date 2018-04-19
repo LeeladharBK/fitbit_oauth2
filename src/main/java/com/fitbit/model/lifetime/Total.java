@@ -1,30 +1,30 @@
 
-package com.fitbit.model.goals;
+package com.fitbit.model.lifetime;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class Goals {
+public class Total {
 
-    @SerializedName("activeMinutes")
-    private Long mActiveMinutes;
+    @SerializedName("activeScore")
+    private Long mActiveScore;
     @SerializedName("caloriesOut")
     private Long mCaloriesOut;
     @SerializedName("distance")
-    private Double mDistance;
+    private Distance mDistance;
     @SerializedName("floors")
-    private Long mFloors;
+    private Floors mFloors;
     @SerializedName("steps")
-    private Long mSteps;
+    private Steps mSteps;
 
-    public Long getActiveMinutes() {
-        return mActiveMinutes;
+    public Long getActiveScore() {
+        return mActiveScore;
     }
 
-    public void setActiveMinutes(Long activeMinutes) {
-        mActiveMinutes = activeMinutes;
+    public void setActiveScore(Long activeScore) {
+        mActiveScore = activeScore;
     }
 
     public Long getCaloriesOut() {
@@ -35,27 +35,27 @@ public class Goals {
         mCaloriesOut = caloriesOut;
     }
 
-    public Double getDistance() {
+    public Distance getDistance() {
         return mDistance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(Distance distance) {
         mDistance = distance;
     }
 
-    public Long getFloors() {
+    public Floors getFloors() {
         return mFloors;
     }
 
-    public void setFloors(Long floors) {
+    public void setFloors(Floors floors) {
         mFloors = floors;
     }
 
-    public Long getSteps() {
+    public Steps getSteps() {
         return mSteps;
     }
 
-    public void setSteps(Long steps) {
+    public void setSteps(Steps steps) {
         mSteps = steps;
     }
 

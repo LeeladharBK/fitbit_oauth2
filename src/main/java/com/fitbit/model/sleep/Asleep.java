@@ -1,15 +1,17 @@
 
-package com.fitbit.model.SleepData;
+package com.fitbit.model.sleep;
 
 import javax.annotation.Generated;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class Wake {
+public class Asleep {
 
+    @SerializedName("count")
     private Long mCount;
+    @SerializedName("minutes")
     private Long mMinutes;
-    private Long mThirtyDayAvgMinutes;
 
     public Long getCount() {
         return mCount;
@@ -25,14 +27,6 @@ public class Wake {
 
     public void setMinutes(Long minutes) {
         mMinutes = minutes;
-    }
-
-    public Long getThirtyDayAvgMinutes() {
-        return mThirtyDayAvgMinutes;
-    }
-
-    public void setThirtyDayAvgMinutes(Long thirtyDayAvgMinutes) {
-        mThirtyDayAvgMinutes = thirtyDayAvgMinutes;
     }
 
 }
