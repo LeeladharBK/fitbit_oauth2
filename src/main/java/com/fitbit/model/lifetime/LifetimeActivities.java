@@ -1,32 +1,13 @@
-
 package com.fitbit.model.lifetime;
 
-import javax.annotation.Generated;
-import com.google.gson.annotations.SerializedName;
-
-@Generated("net.hexar.json2pojo")
-@SuppressWarnings("unused")
 public class LifetimeActivities {
+    private LifetimeActivity total;
 
-    @SerializedName("best")
-    private Best mBest;
-    @SerializedName("lifetime")
-    private Lifetime mLifetime;
-
-    public Best getBest() {
-        return mBest;
+    public LifetimeActivity getTotal() {
+        return total;
     }
 
-    public void setBest(Best best) {
-        mBest = best;
+    public void setTotal(LifetimeActivity total) {
+        this.total = total;
     }
-
-    public Lifetime getLifetime() {
-        return mLifetime;
-    }
-
-    public void setLifetime(Lifetime lifetime) {
-        mLifetime = lifetime;
-    }
-
 }

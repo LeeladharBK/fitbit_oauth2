@@ -28,3 +28,6 @@ fitbit:
 logging:
   level:
     org.springframework.security: TRACE
+
+
+#spring:devtools:restart:exclude: public/**

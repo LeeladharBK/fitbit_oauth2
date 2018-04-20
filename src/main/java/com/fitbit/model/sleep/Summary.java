@@ -1,42 +1,53 @@
 
 package com.fitbit.model.sleep;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
 public class Summary {
 
-    @SerializedName("asleep")
-    private Asleep mAsleep;
-    @SerializedName("awake")
-    private Awake mAwake;
-    @SerializedName("restless")
-    private Restless mRestless;
+    @SerializedName("deep")
+    private Deep mDeep;
+    @SerializedName("light")
+    private Light mLight;
+    @SerializedName("rem")
+    private Rem mRem;
+    @SerializedName("wake")
+    private Wake mWake;
 
-    public Asleep getAsleep() {
-        return mAsleep;
+    public Deep getDeep() {
+        return mDeep;
     }
 
-    public void setAsleep(Asleep asleep) {
-        mAsleep = asleep;
+    public void setDeep(Deep deep) {
+        mDeep = deep;
     }
 
-    public Awake getAwake() {
-        return mAwake;
+    public Light getLight() {
+        return mLight;
     }
 
-    public void setAwake(Awake awake) {
-        mAwake = awake;
+    public void setLight(Light light) {
+        mLight = light;
     }
 
-    public Restless getRestless() {
-        return mRestless;
+    public Rem getRem() {
+        return mRem;
     }
 
-    public void setRestless(Restless restless) {
-        mRestless = restless;
+    public void setRem(Rem rem) {
+        mRem = rem;
+    }
+
+    public Wake getWake() {
+        return mWake;
+    }
+
+    public void setWake(Wake wake) {
+        mWake = wake;
     }
 
 }

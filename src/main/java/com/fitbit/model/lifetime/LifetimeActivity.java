@@ -1,4 +1,4 @@
-package com.fitbit.model;
+package com.fitbit.model.lifetime;
 
 public class LifetimeActivity {
 

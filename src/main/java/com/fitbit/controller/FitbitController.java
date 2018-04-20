@@ -1,28 +1,13 @@
-/*
- * Copyright 2012-2015 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package com.fitbit;
+package com.fitbit.controller;
 
-import com.fitbit.model.Activity;
-import com.fitbit.model.LifetimeActivity;
 import com.fitbit.model.activities.DailyActivity;
 import com.fitbit.model.calories.CaloriesData;
 import com.fitbit.model.distance.DistanceData;
 import com.fitbit.model.floors.FloorsData;
 import com.fitbit.model.goals.MyGoal;
 import com.fitbit.model.heart.HeartData;
+import com.fitbit.model.lifetime.Activity;
+import com.fitbit.model.lifetime.LifetimeActivity;
 import com.fitbit.model.sleep.SleepData;
 import com.fitbit.model.steps.ActivitiesStep;
 import com.fitbit.model.steps.StepsData;
@@ -30,8 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,11 +30,10 @@ import java.lang.reflect.Type;
 import java.security.Principal;
 import java.util.List;
 
-@SpringBootApplication
 @EnableOAuth2Sso
 @RestController
 @EnableWebSecurity
-public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
+public class FitbitController extends WebSecurityConfigurerAdapter {
 
     @Autowired
     OAuth2RestTemplate fitbitOAuthRestTemplate;
@@ -116,7 +98,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         System.out.println(jsonString);
 
         MyGoal myGoal = gson.fromJson(jsonString, MyGoal.class);
-        return myGoal;
+        return myGoal.getGoals();
     }
 
     @RequestMapping("/daily-activity")
@@ -129,7 +111,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         System.out.println(jsonString);
 
         DailyActivity dailyActivity = gson.fromJson(jsonString, DailyActivity.class);
-        return dailyActivity;
+        return dailyActivity.getSummary();
     }
 
 
@@ -143,7 +125,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         System.out.println(jsonString);
 
         SleepData sleepData = gson.fromJson(jsonString, SleepData.class);
-        return sleepData;
+        return sleepData.getSleep();
     }
 
     @RequestMapping("/heart-rate")
@@ -160,7 +142,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         }.getType();
         HeartData heartData = gson.fromJson(jsonString, collectionType);
 
-        return heartData;
+        return heartData.getActivitiesHeart();
     }
 
     @RequestMapping("/steps-data")
@@ -180,7 +162,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         for (ActivitiesStep step : steps) {
             System.out.println(step.getDateTime() + " : " + step.getValue());
         }
-        return stepsData;
+        return stepsData.getActivitiesSteps();
     }
 
     @RequestMapping("/calories-data")
@@ -198,11 +180,10 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
 //        }.getType();
         CaloriesData caloriesData = gson.fromJson(jsonString, CaloriesData.class);
 
-        return caloriesData;
+        return caloriesData.getActivitiesCalories();
     }
 
     @RequestMapping("/distance-data")
-
     public @ResponseBody
     Object distanceDateRange(@RequestParam(value = "date_range") String dateRange) {
         System.out.println("In here Distance data: " + fitbitOAuthRestTemplate.getAccessToken());
@@ -212,7 +193,7 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         System.out.println(jsonString);
 
         DistanceData distanceData = gson.fromJson(jsonString, DistanceData.class);
-        return distanceData;
+        return distanceData.getActivitiesDistance();
     }
 
     @RequestMapping("/floors-data")
@@ -225,9 +206,8 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
         System.out.println(jsonString);
 
         FloorsData floorsData = gson.fromJson(jsonString, FloorsData.class);
-        return floorsData;
+        return floorsData.getActivitiesFloors();
     }
-
 
     @RequestMapping("/user")
     public Principal user(Principal principal) {
@@ -240,9 +220,4 @@ public class FitbitOAuthExample extends WebSecurityConfigurerAdapter {
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(FitbitOAuthExample.class, args);
-    }
-
 }

@@ -12,6 +12,12 @@
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript"
             src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="/webjars/js-cookie/js.cookie.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/heart-graph.js"></script>
+    <script type="text/javascript" src="/js/sleep-graph.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
 <h1>Login</h1>
@@ -63,120 +69,7 @@
     <div>
         <button onClick="logout()" class="btn btn-primary">Logout</button>
     </div>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 </div>
-<script type="text/javascript"
-        src="/webjars/js-cookie/js.cookie.js"></script>
-<script type="text/javascript">
-    $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            if (settings.type == 'POST' || settings.type == 'PUT'
-                || settings.type == 'DELETE') {
-                if (!(/^http:.*/.test(settings.url) || /^https:.*/
-                        .test(settings.url))) {
-                    // Only send the token to relative URLs i.e. locally.
-                    xhr.setRequestHeader("X-XSRF-TOKEN",
-                        Cookies.get('XSRF-TOKEN'));
-                }
-            }
-        }
-    });
-
-    $.get("/lifetime-activity", function (data) {
-        $("#lifetimeSteps").html(data.steps);
-        $("#lifetimeFloors").html(data.floors);
-        $("#lifetimeDistance").html(data.distance);
-    });
-
-    $.get("/user", function (data) {
-        $("#user").html(data.userAuthentication.details.user.fullName);
-        $(".unauthenticated").hide();
-        $(".authenticated").show();
-    });
-
-    var daily_activities = function () {
-        var date = document.getElementById("date").value;
-        $.get("/daily-activity", {date: date + ".json"}, function (data) {
-            console.log(data);
-        });
-    };
-
-    var goals = function () {
-        var goal_type = $('input[name=goals]:checked').val()
-        $.get("/goals", {goal_type: goal_type + ".json"}, function (data) {
-            console.log(data);
-        });
-    };
-
-    var sleep_data = function () {
-        var start_date = document.getElementById("start_date").value;
-        var end_date = document.getElementById("end_date").value;
-        $.get("/sleep-data", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 1");
-            console.log(data);
-        });
-    };
-
-    var heart_rate_data = function () {
-        var start_date = document.getElementById("heart_start_date").value;
-        var end_date = document.getElementById("heart_end_date").value;
-        $.get("/heart-rate", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 2");
-            console.log(data);
-        });
-    };
-
-    var steps_data = function () {
-        var start_date = document.getElementById("steps_start_date").value;
-        var end_date = document.getElementById("steps_end_date").value;
-        $.get("/steps-data", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 3");
-            console.log(data);
-            // var arrayLength = data.length;
-            // for (var i = 0; i < arrayLength; i++) {
-            //     console.log(data[i]);
-            //     //Do something
-            // }
-        });
-    };
-
-
-    var calories_data = function () {
-        var start_date = document.getElementById("calories_start_date").value;
-        var end_date = document.getElementById("calories_end_date").value;
-        $.get("/calories-data", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 4");
-            console.log(data);
-        });
-    };
-
-
-    var distance_data = function () {
-        var start_date = document.getElementById("distance_start_date").value;
-        var end_date = document.getElementById("distance_end_date").value;
-        $.get("/distance-data", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 5");
-            console.log(data);
-        });
-    };
-
-
-    var floors_data = function () {
-        var start_date = document.getElementById("floors_start_date").value;
-        var end_date = document.getElementById("floors_end_date").value;
-        $.get("/floors-data", {date_range: start_date + "/" + end_date + ".json"}, function (data) {
-            console.log("hii man 6");
-            console.log(data);
-        });
-    };
-
-    var logout = function () {
-        $.post("/logout", function () {
-            $("#user").html('');
-            $(".unauthenticated").show();
-            $(".authenticated").hide();
-        });
-        return true;
-    }
-</script>
 </body>
 </html>

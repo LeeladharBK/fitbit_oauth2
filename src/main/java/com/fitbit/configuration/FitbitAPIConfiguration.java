@@ -1,4 +1,4 @@
-package com.fitbit.model;
+package com.fitbit.configuration;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateFactory;
 import org.springframework.context.annotation.Bean;
